@@ -26,5 +26,26 @@
     <ClInclude Include="clsDblLinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="clsMyQueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsMyStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsDynamicArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsMyQueueArr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsMyStackArr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsMystring.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clsQueueLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

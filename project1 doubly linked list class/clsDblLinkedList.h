@@ -4,8 +4,6 @@ using namespace std;
 
 
 
-int counter = 0;
-
 template <class T>
 class clsDblLinkedList
 {
@@ -21,20 +19,21 @@ public:
         Node* prev;
     };
     
-    Node* _head= NULL;
+    Node* head = NULL;
     
     void printNode()
     {
-        Node* myNode = _head;
+        Node* myNode = head;
 
         if (myNode == NULL)
         {
             cout << "\nThere are no Nodes!\n";
             return;
         }
+
         while (myNode != NULL)
         {
-            cout << myNode->value << " ";
+            cout << myNode->value << " ";// 1 2 3 4 5
             myNode = myNode->next;
         }
         cout << "\n";
@@ -42,7 +41,7 @@ public:
     
     Node* FindeNode(T val)
     {
-        Node* nodeToFind = _head;
+        Node* nodeToFind = head;
 
         while (nodeToFind != NULL)// 1 2 3 4 5
         {
@@ -60,17 +59,30 @@ public:
 
         newNode->value = value;
         newNode->prev = NULL;
-        newNode->next = _head;
+        newNode->next = head;
 
-        if (
-            
-            _head != NULL)
-            _head->prev = newNode;
+        if (head != NULL)
+            head->prev = newNode;
 
-         _head = newNode;
+         head = newNode;
         size++;
     }
     
+    void InsertNodeAtBegining(Node* Head, T value)
+    {
+        Node* newNode = new Node();
+
+        newNode->value = value;
+        newNode->prev = NULL;
+        newNode->next = Head;
+
+        if (Head != NULL)
+            Head->prev = newNode;
+
+         Head = newNode;
+        size++;
+    }
+
     void InsertAfter(Node* NodeBefore, int valueToInsert)
     {
     	Node* newNode = new Node();
@@ -94,50 +106,76 @@ public:
 
     void InsertAtEnd(int valueToInsert)
     {
-        Node* my_head = _head;
+        Node* current = head;
         Node* newNode = new Node();
 
         newNode->value = valueToInsert;
         newNode->next = NULL;
 
-        if (my_head == NULL)
+
+        if (head == NULL)
         {
             newNode->prev = NULL;
-            my_head = newNode;
+            head = newNode;
+
+            size++;
             return;
         }
 
-        Node* lastNode = my_head;
-        while (my_head != NULL)
+        Node* lastNode = current;
+        while (current != NULL)
         {
-            lastNode = my_head;
-            my_head = my_head->next;
+            lastNode = current;
+            current = current->next;
         }
 
         lastNode->next = newNode;
         newNode->prev = lastNode;
         size++;
+        /*Node* myhead = head;
+        Node* newNode = new Node();
+
+        newNode->value = valueToInsert;
+        newNode->next = NULL;
+
+        if (myhead == NULL)
+        {
+            newNode->prev = NULL;
+            myhead = newNode;
+            return;
+        }
+
+        Node* lastNode = myhead;
+        while (myhead != NULL)
+        {
+            lastNode = myhead;
+            myhead = myhead->next;
+        }
+
+        lastNode->next = newNode;
+        newNode->prev = lastNode;
+        size++;*/
     }
 
     void DeleteNode(Node* nodeToDelete)
     {
-        Node* firstNode = _head;
+        Node* firstNode = head;
 
-        if (_head == NULL) return;
+        if (head == NULL) return;
 
         //if node is the only node
-        if (_head != NULL && nodeToDelete->prev == NULL && nodeToDelete->next == NULL)
+        if (head != NULL && nodeToDelete->prev == NULL && nodeToDelete->next == NULL)
         {
-            _head = NULL;
+            head = NULL;
             delete nodeToDelete;
             size--;
             return;
         }
 
         //if node is the first node
-        if (_head != NULL && nodeToDelete->prev == NULL && nodeToDelete->next != NULL)
+        if (head != NULL && nodeToDelete->prev == NULL && nodeToDelete->next != NULL)
         {
-            _head = nodeToDelete->next;
+            head = nodeToDelete->next;
             nodeToDelete->next->prev = NULL;
             delete nodeToDelete;
             size--;
@@ -145,10 +183,10 @@ public:
         }
 
         //if node is the last node
-        if (_head != NULL && nodeToDelete->prev != NULL && nodeToDelete->next == NULL)
+        if (head != NULL && nodeToDelete->prev != NULL && nodeToDelete->next == NULL)
         {
             nodeToDelete->prev->next = NULL;
-            _head = firstNode;
+            head = firstNode;
             delete nodeToDelete;
             size--;
             return;
@@ -158,7 +196,7 @@ public:
         if (nodeToDelete == NULL)
         {
             cout << "\nnode is not found= " << "\n";
-            _head = firstNode;
+            head = firstNode;
             return;
         }
 
@@ -167,7 +205,7 @@ public:
         {
             nodeToDelete->prev->next = nodeToDelete->next;////
             nodeToDelete->next->prev = nodeToDelete->prev;
-            _head = firstNode;
+            head = firstNode;
             delete nodeToDelete;
             size--;
         }
@@ -175,42 +213,156 @@ public:
 
     void DeleteFirstNode()
     {
-        if (_head == NULL)return;
+        Node* temp = head;
 
-        Node* temp = _head;
+        if (head == NULL)return;// 1 2 3 4
 
-        _head = _head->next;
+        head = head->next;
 
-        if (_head != NULL)
-            _head->prev = NULL;
+        if (head != NULL)
+            head->prev = NULL;
+
         delete temp;
         size--;
     }
 
     void DeleteLastNode()
     {
-        if (_head == NULL)return;
+        if (head == NULL)return;
 
-        Node* firstNode = _head;
-        Node* lastNode = _head;
-
-        while (_head != NULL)
+        if (head->next == NULL)
         {
-            lastNode = _head;
-            _head = _head->next;
+            delete head;
+            head = NULL;
+
+            size--;
+            return;
         }
 
-        lastNode->prev->next = NULL;
-        _head = firstNode;
+        Node* current = head;
+        while (current->next->next !=NULL)
+        {
+            current = current->next;    
+        }
+        Node* temp = current->next;
+        current->next = NULL;
+        delete temp;
+
+        size--;
+
+        /*
+        if (head == NULL)return;
+
+        Node* current = head;
+
+        Node* lastNode = new Node();
+        while (current != NULL)
+        {
+            lastNode = current;
+            current = current->next;
+        }
+
+        if (lastNode->prev != NULL)
+            lastNode->prev->next = NULL;
+        else
+            head = NULL;
 
         delete lastNode;
-        size--;
+        */
     }
 
-    int Size()// 1 2 3 4 5 6 7
+    int Size()
     {
         return size;
     }
 
+    bool IsEmpty()
+    {
+        return Size() == 0 ? true : false;
+    }
+    
+    void Clear()
+    {
+        while (size > 0)
+            DeleteFirstNode();
+    }
+
+    void Reverse()
+    { 
+        if (head == NULL)return;
+
+        Node* current = head;
+        Node* temp = nullptr;
+       
+        while (current != NULL)
+        {
+            temp = current->prev;
+            current->prev = current->next;
+            current->next = temp;
+
+            current = current->prev;
+        }       
+       
+       if (temp != nullptr)
+            head = temp->prev;
+    }
+
+    Node* GetNode(int index)
+    {
+        int pos = 0;
+        Node* current = head;
+
+        if (index > size - 1 || index <0)return NULL;
+
+        while (current != NULL && (current->next != NULL))// 1 2 3 4 5 
+        {
+            if (index == pos)
+                break;
+        
+            current = current->next;
+            pos ++;
+        }
+        return current;
+    } 
+    
+    int GetItem(int index)
+    {
+        Node* ItemNode = GetNode(index);
+
+        if (ItemNode == NULL)return NULL;
+
+        else return ItemNode->value;
+    }
+
+    bool UpdateItem(int index, int newValue)
+    {
+        Node* ItemNode = GetNode(index);
+
+        if (ItemNode != NULL)
+        {
+            ItemNode->value = newValue;
+            return true;
+        }
+        else
+            return false;
+    } 
+   
+    bool InsertAfter(int index, int value)
+    {
+        Node* ItemNode = GetNode(index);
+
+        if (ItemNode != NULL)
+        {
+            Node* newNode = new Node();
+            InsertAfter(ItemNode, value);
+            /*newNode->value = value;
+            newNode->next = ItemNode->next;
+            newNode->prev = ItemNode;
+            ItemNode->next = newNode;*/
+            return true;
+        }
+        else
+            return false;
+    } 
 };
 
